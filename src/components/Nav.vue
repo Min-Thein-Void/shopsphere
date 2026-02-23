@@ -1,6 +1,5 @@
 <template>
-  <nav
-    class="fixed top-0 left-0 w-full z-50 bg-gray-800 shadow-md border-b border-gray-700 transition-colors duration-300">
+  <nav class="fixed top-0 left-0 w-full z-50 bg-neutral-950 transition-colors duration-300">
     <div class="px-6 py-3 flex items-center justify-between">
 
       <!-- Left: Logo -->
@@ -9,38 +8,42 @@
       </div>
 
       <!-- Center: Navigation Links -->
-      <ul class="flex gap-6 text-sm font-medium text-gray-200">
+      <ul class="flex gap-6 text-sm font-medium text-cyan-300">
+        <!-- Home -->
         <!-- Home -->
         <li>
           <RouterLink :to="{ name: 'Home' }"
-            class="flex items-center gap-1 px-2 py-1 rounded-md hover:bg-gray-700 hover:text-green-400 transition-colors"
-            :class="{ 'bg-gray-700 text-green-400': $route.name === 'Home' }">
-            <!-- Proper Home Icon -->
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M3 12l9-9 9 9v9a3 3 0 01-3 3H6a3 3 0 01-3-3v-9z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 21V12h6v9" />
+            class="flex items-center gap-1 px-2 py-1 rounded-md transition-all duration-300 hover:text-shadow-xl hover:text-shadow-modern"
+            :class="{ 'text-shadow-xl text-shadow-modern': $route.name === 'Home' }">
+            <!-- Home Icon (solid style) -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2.5L2 9h1v8h5v-5h4v5h5V9h1L10 2.5z" />
             </svg>
+
             Home
           </RouterLink>
         </li>
+
         <!-- Cart -->
         <li>
           <RouterLink :to="{ name: 'CheckOut' }"
-            class="flex items-center gap-1 px-2 py-1 rounded-md hover:bg-gray-700 hover:text-green-400 transition-colors relative"
-            :class="{ 'bg-gray-700 text-green-400': $route.name === 'CheckOut' }">
+            class="flex items-center gap-1 px-2 py-1 rounded-md relative transition-all duration-300 hover:text-shadow-xl hover:text-shadow-modern"
+            :class="{ 'text-shadow-xl text-shadow-modern': $route.name === 'CheckOut' }">
+            <!-- Shopping Cart Icon (solid style) -->
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 6h13L17 13M7 13H5.4" />
             </svg>
             Cart
             <span
-              class="absolute -top-2 -right-3 bg-green-400 text-gray-900 text-xs font-semibold rounded-full px-2 py-0.5">
+              class="absolute -top-2 -right-3 bg-neutral-600 text-cyan-400 text-xs font-semibold rounded-full px-2 py-0.5">
               {{ count }}
             </span>
           </RouterLink>
         </li>
+
       </ul>
+
 
     </div>
   </nav>
@@ -102,9 +105,13 @@ export default {
   font-weight: bold;
 }
 
+/* Make active route use cyan text with modern text shadow */
 :deep(.router-link-active),
 :deep(.router-link-exact-active) {
-  color: orangered !important;
+  color: inherit !important;
+  /* keep cyan-300 from parent */
+  text-shadow: 2px 2px 10px rgba(0, 255, 255, 0.7);
+  /* modern bright cyan shadow */
 }
 
 /* Auth buttons */

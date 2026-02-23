@@ -5,7 +5,7 @@ export const useUserStore = defineStore("user", {
     user: JSON.parse(localStorage.getItem("user")) || null,
     token: localStorage.getItem("auth_token") || null,
     isAuthenticated:
-      !!localStorage.getItem("auth_token") && !!localStorage.getItem("user"), // persist auth state
+      !!localStorage.getItem("auth_token") && !!localStorage.getItem("user"),
   }),
   getters: {
     getUser: (state) => state.user,
@@ -16,12 +16,12 @@ export const useUserStore = defineStore("user", {
     setUser(userData) {
       this.user = userData;
       this.isAuthenticated = true;
-      localStorage.setItem("user", JSON.stringify(userData)); // persist user
+      localStorage.setItem("user", JSON.stringify(userData));
     },
     setToken(token) {
       this.token = token;
       this.isAuthenticated = true;
-      localStorage.setItem("auth_token", token); // persist token
+      localStorage.setItem("auth_token", token);
     },
     clearUser() {
       this.user = null;

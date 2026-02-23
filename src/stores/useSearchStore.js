@@ -10,29 +10,36 @@ export const useSearchStore = defineStore("search", {
   }),
   actions: {
     async searchProducts() {
-      if (!this.searchTerm) {
-        this.searchResults = [];
-        return;
-      }
-
       this.loading = true;
       try {
-        const res = await api.post("/api/products/search", {
-          q: this.searchTerm,
-        });
-        this.searchResults = res.data;
-        if (this.searchResults.length === 0) {
-          Swal.fire({
-            icon: "info",
-            title: "No Results Found",
-            text: `We couldn’t find any products matching "${this.searchTerm}". Please try another search.`,
-            confirmButtonColor: "#4f46e5",
-            background: "#1f2937",
-            color: "#e5e7eb",
-          });
+        const term = this.searchTerm?.trim();
+
+        if (!term) {
+          const res = await api.get("/api/products");
+          this.searchResults = res.data;
+        } else {
+          const res = await api.post("/api/products/search", { q: term });
+          this.searchResults = res.data;
+
+          if (this.searchResults.length === 0) {
+            Swal.fire({
+              icon: "info",
+              title: "No Results Found",
+              text: `We couldn’t find any products matching "${term}". Please try another search.`,
+              confirmButtonColor: "#4f46e5",
+              background: "#1f2937",
+              color: "#e5e7eb",
+            });
+          }
         }
       } catch (err) {
         console.error("Search failed:", err);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong while searching products.",
+          confirmButtonColor: "#ef4444",
+        });
       } finally {
         this.loading = false;
       }

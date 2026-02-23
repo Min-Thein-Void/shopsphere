@@ -1,23 +1,23 @@
 <template>
-    <div class="bg-gray-900 min-h-screen flex flex-col lg:flex-row justify-center p-4 mt-[70px]">
+    <div class="bg-neutral-950 min-h-screen flex flex-col lg:flex-row justify-center p-6 mt-17.5 gap-6">
 
         <!-- Cart Section -->
         <div
-            class="flex-1 lg:max-w-lg bg-gray-800 rounded-xl shadow-xl overflow-hidden border border-white/10 p-6 mb-6 lg:mb-0">
-            <h2 class="text-2xl font-bold text-orange-400 mb-6 flex items-center gap-2">
+            class="flex-1 lg:max-w-lg bg-neutral-900 rounded-xl shadow-2xl overflow-hidden border border-white/10 p-6 mb-6 lg:mb-0">
+            <h2 class="text-2xl font-bold text-cyan-300 mb-6 flex items-center gap-2">
                 🛒 Your Cart
             </h2>
 
             <!-- Cart empty state -->
-            <div v-if="!cart.cartProducts.length" class="flex flex-col items-center justify-center mt-20 text-gray-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mb-4 text-gray-500" fill="none"
+            <div v-if="!cart.cartProducts.length" class="flex flex-col items-center justify-center mt-20 text-cyan-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mb-4 text-cyan-700" fill="none"
                     viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.6 8H19M7 13l-2-8m0 0L5 4m14 0h-2" />
                 </svg>
                 <p class="text-lg font-semibold">Your cart is empty</p>
                 <router-link :to="{ name: 'Shop' }"
-                    class="mt-4 inline-flex items-center gap-2 text-green-400 hover:text-green-500 transition font-medium">
+                    class="mt-4 inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition font-medium">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -27,19 +27,19 @@
             </div>
 
             <!-- Cart items -->
-            <ul v-else class="space-y-4 max-h-[400px] overflow-y-auto custom-scrollbar">
+            <ul v-else class="space-y-4 max-h-100 overflow-y-auto custom-scrollbar">
                 <li v-for="item in cartItemsInCheckOut" :key="item.id"
-                    class="flex items-center gap-4 border-b border-white/10 pb-4 transform transition hover:scale-[1.02] hover:shadow-lg rounded-lg">
+                    class="flex items-center gap-4 border-b border-white/10 p-3 transform transition hover:scale-[1.02] hover:shadow-lg rounded-lg bg-neutral-950">
                     <img :src="item.image ? `http://localhost:8000/storage/${item.image}` : '/favicon.ico'"
-                        alt="Product" class="w-20 h-20 rounded object-cover border border-white/10" />
+                        alt="Product" class="w-20 h-20 rounded-lg object-cover border border-white/10" />
                     <div class="flex-1">
-                        <router-link class="font-semibold text-gray-100 capitalize hover:text-orange-400 transition"
+                        <router-link class="font-semibold text-cyan-300 capitalize hover:text-cyan-200 transition"
                             :to="{ name: 'Detail', params: { id: item.id } }">
                             {{ item.name }}
                         </router-link>
-                        <p class="text-sm text-gray-400">Qty: {{ item.qty }}</p>
+                        <p class="text-sm text-cyan-500">Qty: {{ item.qty }}</p>
                         <button @click="remove(item.id)"
-                            class="flex items-center gap-1 text-red-400 hover:text-red-500 transition text-sm mt-1">
+                            class="flex items-center gap-1 text-red-500 hover:text-red-600 transition text-sm mt-1">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -48,21 +48,21 @@
                             Remove
                         </button>
                     </div>
-                    <div class="font-semibold text-orange-300 transition-all duration-300">${{ item.price }}</div>
+                    <div class="font-semibold text-cyan-300 transition-all duration-300">${{ item.price }}</div>
                 </li>
             </ul>
 
             <!-- Total + Actions -->
             <div v-if="cart.cartProducts.length" class="mt-6 border-t border-white/10 pt-4 flex flex-col gap-4">
-                <div class="flex justify-between items-center text-gray-100">
+                <div class="flex justify-between items-center text-cyan-300">
                     <span class="text-lg">Total:</span>
-                    <span class="text-2xl font-bold text-orange-400 transition-all duration-500">${{ total }}</span>
+                    <span class="text-2xl font-bold text-cyan-300 transition-all duration-500">${{ total }}</span>
                 </div>
 
                 <div class="flex flex-col sm:flex-row gap-3">
                     <!-- Add More Button -->
                     <router-link :to="{ name: 'Shop' }"
-                        class="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-100 font-semibold transition transform hover:scale-105 duration-200">
+                        class="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg bg-cyan-800 hover:bg-cyan-700 text-cyan-300 font-semibold transition transform hover:scale-105 duration-200">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -72,7 +72,7 @@
 
                     <!-- Clear All Button -->
                     <button @click="removes"
-                        class="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg bg-red-500 hover:bg-red-600 text-white font-semibold transition transform hover:scale-105 duration-200">
+                        class="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold transition transform hover:scale-105 duration-200">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -81,19 +81,18 @@
                         Clear All
                     </button>
                 </div>
-
-                
             </div>
         </div>
 
         <!-- Checkout Form (Sticky on Desktop) -->
         <div v-if="cart.cartProducts.length"
-            class="flex-1 lg:max-w-lg bg-gray-800 rounded-xl shadow-xl p-6 lg:ml-6 lg:sticky lg:top-24">
+            class="flex-1 lg:max-w-lg bg-neutral-900 rounded-xl shadow-2xl p-6 lg:ml-6 lg:sticky lg:top-24">
             <CheckOutForm />
         </div>
 
     </div>
 </template>
+
 
 <script>
 import CheckOutForm from './CheckOutForm.vue'

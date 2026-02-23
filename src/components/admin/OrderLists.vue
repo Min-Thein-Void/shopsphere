@@ -1,46 +1,55 @@
 <template>
-    <div class="flex min-h-screen bg-gray-800 mt-[60px] w-full">
+    <div class="flex min-h-screen bg-neutral-950 mt-15 w-full text-cyan-300">
         <!-- Main Content -->
-        <div class="flex-1 px-8 py-10 transition-all duration-300" :class="{ 'ml-64': isOpen, 'ml-0': !isOpen }">
-            <div class="max-w-[1400px] mx-auto space-y-8">
+        <div class="flex-1 px-6 md:px-10 py-10 transition-all duration-300"
+            :class="{ 'ml-64': isOpen, 'ml-0': !isOpen }">
+            <div class="max-w-350 mx-auto space-y-10">
 
-                <!-- Page Title + Summary -->
+                <!-- Page Title -->
                 <div class="flex items-center justify-between">
-                    <h1 class="text-3xl font-bold text-gray-100">Orders List</h1>
+                    <h1 class="text-3xl font-bold">📦 Orders List</h1>
                 </div>
 
                 <!-- Summary Boxes -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="bg-gray-700 rounded-lg shadow-sm p-4 text-center">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="bg-neutral-900 rounded-lg shadow-md p-5 text-center hover:bg-neutral-800 transition">
                         <p class="text-sm text-gray-400">Orders</p>
-                        <p class="text-xl font-bold text-gray-100">1,046</p>
+                        <p class="text-2xl font-bold text-cyan-300">1,046</p>
                     </div>
-                    <div class="bg-gray-700 rounded-lg shadow-sm p-4 text-center">
+                    <div class="bg-neutral-900 rounded-lg shadow-md p-5 text-center hover:bg-neutral-800 transition">
                         <p class="text-sm text-gray-400">Unpaid Orders</p>
-                        <p class="text-xl font-bold text-yellow-400">159</p>
+                        <p class="text-2xl font-bold text-yellow-400">159</p>
                     </div>
-                    <div class="bg-gray-700 rounded-lg shadow-sm p-4 text-center">
+                    <div class="bg-neutral-900 rounded-lg shadow-md p-5 text-center hover:bg-neutral-800 transition">
                         <p class="text-sm text-gray-400">Waiting for Shipment</p>
-                        <p class="text-xl font-bold text-orange-400">624</p>
+                        <p class="text-2xl font-bold text-orange-400">624</p>
                     </div>
-                    <div class="bg-gray-700 rounded-lg shadow-sm p-4 text-center">
+                    <div class="bg-neutral-900 rounded-lg shadow-md p-5 text-center hover:bg-neutral-800 transition">
                         <p class="text-sm text-gray-400">Returns</p>
-                        <p class="text-xl font-bold text-red-400">263</p>
+                        <p class="text-2xl font-bold text-red-400">263</p>
                     </div>
                 </div>
 
                 <!-- Filter Tabs -->
-                <div class="flex gap-4 text-sm font-medium text-gray-300">
-                    <button class="px-3 py-1 rounded bg-green-600 text-white">All Orders</button>
-                    <button class="px-3 py-1 rounded hover:bg-gray-700">Active</button>
-                    <button class="px-3 py-1 rounded hover:bg-gray-700">Unpaid</button>
-                    <button class="px-3 py-1 rounded hover:bg-gray-700">Unfulfilled</button>
+                <div class="flex flex-wrap gap-3 text-sm font-medium">
+                    <button class="px-4 py-2 rounded-lg bg-cyan-600 text-white shadow hover:bg-cyan-500 transition">
+                        All Orders
+                    </button>
+                    <button class="px-4 py-2 rounded-lg bg-neutral-800 hover:bg-neutral-700 transition">
+                        Active
+                    </button>
+                    <button class="px-4 py-2 rounded-lg bg-neutral-800 hover:bg-neutral-700 transition">
+                        Unpaid
+                    </button>
+                    <button class="px-4 py-2 rounded-lg bg-neutral-800 hover:bg-neutral-700 transition">
+                        Unfulfilled
+                    </button>
                 </div>
 
                 <!-- Orders Table -->
-                <div class="overflow-x-auto bg-gray-800 rounded-xl shadow-md">
+                <div class="overflow-x-auto bg-neutral-900 rounded-xl shadow-lg">
                     <table class="min-w-full text-sm text-left">
-                        <thead class="bg-zinc-700 text-gray-200 font-semibold">
+                        <thead class="bg-neutral-800 text-gray-300 font-semibold">
                             <tr>
                                 <th class="px-4 py-3">Buyer</th>
                                 <th class="px-4 py-3">Email</th>
@@ -52,12 +61,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="orderItem in orders" :key="orderItem.id" class="border-t border-gray-600">
-                                <td class="px-4 py-3 text-gray-100">{{ orderItem.fullname }}</td>
-                                <td class="px-4 py-3 text-gray-100">{{ orderItem.email }}</td>
-                                <td class="px-4 py-3 text-gray-100">{{ orderItem.phone }}</td>
-                                <td class="px-4 py-3 text-gray-100">{{ orderItem.shipping_address }}</td>
-                                <td class="px-4 py-3 font-semibold text-green-400">${{ orderItem.total }}</td>
+                            <tr v-for="orderItem in orders" :key="orderItem.id"
+                                class="border-t border-neutral-700 hover:bg-neutral-800 transition">
+                                <td class="px-4 py-3">{{ orderItem.fullname }}</td>
+                                <td class="px-4 py-3">{{ orderItem.email }}</td>
+                                <td class="px-4 py-3">{{ orderItem.phone }}</td>
+                                <td class="px-4 py-3">{{ orderItem.shipping_address }}</td>
+                                <td class="px-4 py-3 font-semibold text-green-400">
+                                    ${{ orderItem.total }}
+                                </td>
                                 <td class="px-4 py-3">
                                     <span class="inline-block px-2 py-1 rounded-full text-xs font-medium" :class="orderItem.status === 'Pending'
                                         ? 'bg-yellow-600 text-yellow-100'
@@ -68,8 +80,8 @@
                                 <td class="px-4 py-3 space-y-1">
                                     <div v-for="item in orderItem.items" :key="item.id">
                                         <router-link :to="{ name: 'Detail', params: { id: item.id } }"
-                                            class="text-blue-400 hover:underline">
-                                            {{ item.product.name }} — ${{ item.price }} x {{ item.quantity }}
+                                            class="text-cyan-400 hover:underline">
+                                            {{ item.product.name }} — ${{ item.price }} × {{ item.quantity }}
                                         </router-link>
                                     </div>
                                 </td>
@@ -77,11 +89,11 @@
                         </tbody>
                     </table>
                 </div>
+
             </div>
         </div>
     </div>
 </template>
-
 
 <script>
 import api from '@/plugins/axios';

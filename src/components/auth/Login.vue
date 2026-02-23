@@ -44,20 +44,17 @@ import { ref, reactive } from "vue";
 import api from "@/plugins/axios";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/useUserStore";
+import Swal from "sweetalert2";
 
 export default {
   setup() {
-    let store = useUserStore()
+    const store = useUserStore();
+    const router = useRouter();
 
     const email = ref("");
     const password = ref("");
     const loading = ref(false);
-    const errors = reactive({
-      email: "",
-      password: "",
-    });
-
-    const router = useRouter();
+    const errors = reactive({ email: "", password: "" });
 
     const validate = () => {
       errors.email = "";
@@ -82,30 +79,42 @@ export default {
       if (!validate()) return;
 
       loading.value = true;
-
       try {
-        const res = await api.post("/api/auth/login", {
+        const { data } = await api.post("/api/auth/login", {
           email: email.value,
           password: password.value,
         });
-        store.setUser(res.data.user);
-        store.setToken(res.data.token);
-        router.push({ name: "Shop" });
 
+        store.setUser(data.user);
+        store.setToken(data.token);
+
+        Swal.fire({
+          icon: "success",
+          title: "Login Successful",
+          text: "Welcome back! Redirecting to shop...",
+          confirmButtonColor: "#f97316",
+          background: "#1f2937",
+          color: "#f3f4f6",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+
+        router.push({ name: "Shop" });
       } catch (error) {
-        alert(error.response?.data?.message || "Login failed");
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: error.response?.data?.message || "Invalid credentials",
+          confirmButtonColor: "#ef4444",
+          background: "#1f2937",
+          color: "#f3f4f6",
+        });
       } finally {
         loading.value = false;
       }
     };
 
-    return {
-      email,
-      password,
-      errors,
-      loading,
-      handleLogin,
-    };
+    return { email, password, errors, loading, handleLogin };
   },
 };
 </script>

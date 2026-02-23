@@ -10,6 +10,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import OrderLists from "@/components/admin/OrderLists.vue";
 import Profile from "@/components/Profile.vue";
 import OrderHistory from "@/components/OrderHistory.vue";
+import ChangePasswordForm from "@/components/ChangePasswordForm.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -91,6 +92,19 @@ const router = createRouter({
       path: "/profile",
       name: "Profile",
       component: Profile,
+    },
+    {
+      path: "/change-password",
+      name: "ChangePassword",
+      component: ChangePasswordForm,
+      beforeEnter(to, from, next) {
+        let store = useUserStore();
+        if (store.isAuthenticated) {
+          next();
+        } else {
+          next({ name: "Login" });
+        }
+      },
     },
   ],
 });
