@@ -4,7 +4,7 @@
 
       <!-- Left: Logo -->
       <div class="flex items-center gap-2">
-        <img src="/public/navlogo2.png" alt="ShopSphere Logo" class="w-[130px] py-2 h-auto" />
+        <img src="/public/shoplogo.png" alt="ShopSphere Logo" class="w-14 h-auto" />
       </div>
 
       <!-- Center: Navigation Links -->

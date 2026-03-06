@@ -1,4 +1,5 @@
 import api from "@/plugins/axios";
+import debounce from "lodash.debounce";
 import { defineStore } from "pinia";
 import Swal from "sweetalert2";
 
@@ -9,7 +10,7 @@ export const useSearchStore = defineStore("search", {
     loading: false,
   }),
   actions: {
-    async searchProducts() {
+    searchProducts: debounce(async function () {
       this.loading = true;
       try {
         const term = this.searchTerm?.trim();
@@ -43,6 +44,6 @@ export const useSearchStore = defineStore("search", {
       } finally {
         this.loading = false;
       }
-    },
+    }, 500),
   },
 });

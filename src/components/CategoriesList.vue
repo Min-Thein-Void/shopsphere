@@ -1,50 +1,50 @@
 <template>
-  <div class="flex flex-col items-center w-full max-w-4xl mx-auto px-2">
-    <!-- Categories + Pagination -->
-    <div class="mt-4 mb-8 w-full flex flex-wrap justify-center items-center gap-2 sm:gap-3">
-
+  <div class="w-full max-w-4xl mx-auto px-2 mt-4 mb-8 glass-container">
+    <div class="flex items-center gap-2">
       <!-- Prev Button -->
-      <button @click="prevPage" :disabled="currentPage === 1"
-        class="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-neutral-800 text-cyan-200 shadow hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed">
-        ◀
+      <button @click="prevPage" :disabled="currentPage === 1 || loading"
+        class="px-4 py-2 rounded-lg bg-neutral-900 text-cyan-300 font-semibold shadow-md backdrop-blur-md hover:bg-neutral-800 disabled:opacity-40 transition">
+        Previous
       </button>
 
-      <!-- Category Buttons -->
-      <button
-        v-for="cat in categories"
-        :key="cat.id"
-        @click="selectCategory(cat.name)"
-        :class="[
-          'px-2 sm:px-3 py-1 sm:py-2 rounded-full shadow-md text-xs sm:text-sm font-medium whitespace-nowrap',
-          activeCategory === cat.name
-            ? 'text-cyan-500 bg-gray-800'
-            : 'bg-neutral-800 text-cyan-300 hover:bg-gray-700'
-        ]"
-      >
-        {{ cat.name }}
-      </button>
+      <!-- Categories Scroll Container -->
+      <div class="flex-1 overflow-x-auto custom-scrollbar">
+        <div class="flex gap-2 w-max">
+          <!-- Skeleton Loading -->
+          <template v-if="loading">
+            <div v-for="n in 5" :key="n" class="h-8 w-24 rounded-full bg-neutral-800 animate-pulse"></div>
+          </template>
 
-      <!-- Clear Button -->
-      <button v-if="activeCategory !== null"
-        @click="clearCategory"
-        :disabled="loading"
-        class="px-3 py-1 sm:px-4 sm:py-2 rounded-full bg-pink-600 text-white text-xs sm:text-sm font-medium shadow hover:bg-pink-700 disabled:opacity-50 disabled:cursor-not-allowed">
-        Clear Filter
-      </button>
+          <!-- Real Categories -->
+          <template v-else>
+            <button v-for="cat in categories" :key="cat.id" @click="selectCategory(cat.name)" :class="[
+              'px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition backdrop-blur-md',
+              activeCategory === cat.name
+                ? 'bg-neutral-800 text-cyan-300 shadow-md'
+                : 'bg-neutral-900 text-cyan-300 hover:bg-neutral-800',
+            ]">
+              {{ cat.name }}
+            </button>
+
+            <!-- Clear -->
+            <button v-if="activeCategory" @click="clearCategory"
+              class="px-4 py-1.5 rounded-full bg-neutral-900 text-cyan-300 text-sm font-medium hover:bg-neutral-800 backdrop-blur-md">
+              All
+            </button>
+          </template>
+        </div>
+      </div>
 
       <!-- Next Button -->
-      <button @click="nextPage" :disabled="currentPage === lastPage"
-        class="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-neutral-800 text-cyan-200 shadow hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed">
-        ▶
+      <button @click="nextPage" :disabled="currentPage === lastPage || loading"
+        class="px-4 py-2 rounded-lg bg-neutral-900 text-cyan-300 font-semibold shadow-md backdrop-blur-md hover:bg-neutral-800 disabled:opacity-40 transition">
+        Next
       </button>
-    </div>
-
-    <!-- Loading Indicator -->
-    <div v-if="loading" class="mt-6 text-gray-500 font-medium">
-      Loading categories...
     </div>
   </div>
 </template>
+
+
 
 <script>
 import useCategories from "@/composable/getCategories";
@@ -57,7 +57,8 @@ export default {
       useCategories();
 
     const searchCategoryStore = useSearchCategoryStore();
-    const { selectedCategory: activeCategory, loading: storeLoading } = storeToRefs(searchCategoryStore);
+    const { selectedCategory: activeCategory, loading: storeLoading } =
+      storeToRefs(searchCategoryStore);
 
     const selectCategory = (categoryName) => {
       searchCategoryStore.searchByProductCategory(categoryName);
@@ -81,3 +82,33 @@ export default {
   },
 };
 </script>
+
+
+<style scoped>
+/* Glass effect container */
+.glass-container {
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+}
+
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(69, 71, 74, 0.6);
+  /* neutral-900 translucent */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #042126, #06333b);
+  /* cyan-300 tones */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+}
+</style>

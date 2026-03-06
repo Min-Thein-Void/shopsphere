@@ -1,6 +1,12 @@
 <template>
     <div
-        class="w-full max-w-sm bg-transparent rounded-2xl border-t-2 border-gray-600/50 shadow-lg shadow-gray-600 hover:shadow-gray-500 transition p-6 h-[420px] flex flex-col">
+        class="relative w-full max-w-sm bg-transparent rounded-2xl border-t-2 border-gray-600/50 shadow-lg shadow-gray-600 hover:shadow-gray-500 transition p-6 h-125 flex flex-col">
+        <div v-if="randomProduct.discount_label" class="absolute left-0 top-0 h-16 w-16">
+            <div
+                class="absolute transform bg-fuchsia-600 text-center text-white font-semibold py-1 -right-6.5 top-0 w-22.5 rounded-tl-2xl rounded-br-2xl">
+                {{ randomProduct.discount_label }}
+            </div>
+        </div>
         <!-- Product Image -->
         <router-link :to="randomProduct?.id ? { name: 'Detail', params: { id: randomProduct.id } } : {}">
             <img class="w-full h-52 object-contain rounded-lg mb-5 transition hover:scale-[1.03]"
@@ -64,9 +70,15 @@
 
         <!-- Price + Add to Cart -->
         <div class="flex items-center justify-between mt-auto">
-            <span class="text-2xl font-bold text-white">
-                <span class="text-amber-500">$</span>{{ randomProduct.price }}
-            </span>
+            <div class="flex flex-col">
+                <span v-if="randomProduct.discount_type" class="text-lg text-gray-400 line-through">
+                    ${{ randomProduct.price }}
+                </span>
+                <!-- Final Price -->
+                <span class="text-2xl font-bold text-white">
+                    <span class="text-amber-500">$</span>{{ randomProduct.final_price }}
+                </span>
+            </div>
 
             <button @click="addToCart(randomProduct)" type="button"
                 class="inline-flex items-center gap-1.5 hover:bg-neutral-800 rounded-2xl text-cyan-300 text-sm font-medium px-4 py-2 border-gray-600 shadow-sm shadow-gray-300/50 transition duration-200 focus:outline-none">

@@ -18,11 +18,16 @@
                             <p class="text-lg font-semibold text-cyan-300">Order #{{ order.id }}</p>
                             <p class="text-sm text-cyan-500">Placed on {{ formatDate(order.created_at) }}</p>
                         </div>
-                        <div class="mt-2 md:mt-0">
+                        <div class="mt-2 md:mt-0 flex flex-col gap-1">
                             <span class="inline-block px-3 py-1 rounded-full text-xs font-medium" :class="order.status === 'pending'
                                 ? 'bg-yellow-600 text-neutral-950'
                                 : 'bg-green-600 text-neutral-950'">
-                                {{ order.status }}
+                                Order: {{ order.status }}
+                            </span>
+                            <span class="inline-block px-3 py-1 rounded-full text-xs font-medium" :class="order.payment_status === 'pending' ? 'bg-gray-500 text-neutral-950'
+                                : order.payment_status === 'paid' ? 'bg-green-600 text-neutral-950'
+                                    : 'bg-red-600 text-neutral-950'">
+                                Payment: {{ order.payment_status }}
                             </span>
                         </div>
                     </div>

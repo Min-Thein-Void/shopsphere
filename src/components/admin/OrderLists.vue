@@ -4,7 +4,6 @@
         <div class="flex-1 px-6 md:px-10 py-10 transition-all duration-300"
             :class="{ 'ml-64': isOpen, 'ml-0': !isOpen }">
             <div class="max-w-350 mx-auto space-y-10">
-
                 <!-- Page Title -->
                 <div class="flex items-center justify-between">
                     <h1 class="text-3xl font-bold">📦 Orders List</h1>
@@ -56,7 +55,9 @@
                                 <th class="px-4 py-3">Phone</th>
                                 <th class="px-4 py-3">Address</th>
                                 <th class="px-4 py-3">Total</th>
-                                <th class="px-4 py-3">Status</th>
+                                <th class="px-4 py-3">Order Status</th>
+                                <th class="px-4 py-3">Payment</th>
+                                <!-- NEW -->
                                 <th class="px-4 py-3">Products</th>
                             </tr>
                         </thead>
@@ -70,18 +71,37 @@
                                 <td class="px-4 py-3 font-semibold text-green-400">
                                     ${{ orderItem.total }}
                                 </td>
+
+                                <!-- Order Status -->
                                 <td class="px-4 py-3">
-                                    <span class="inline-block px-2 py-1 rounded-full text-xs font-medium" :class="orderItem.status === 'Pending'
-                                        ? 'bg-yellow-600 text-yellow-100'
-                                        : 'bg-green-600 text-green-100'">
-                                        {{ orderItem.status }}
+                                    <select v-model="orderItem.status" @change="updateStatus(orderItem)"
+                                        class="bg-neutral-800 text-white text-xs px-2 py-1 rounded">
+                                        <option value="pending">Pending</option>
+                                        <option value="shipped">Shipped</option>
+                                        <option value="delivered">Delivered</option>
+                                        <option value="cancelled">Cancelled</option>
+                                    </select>
+                                </td>
+
+                                <!-- Payment Status -->
+                                <td class="px-4 py-3">
+                                    <span class="inline-block px-2 py-1 rounded-full text-xs font-medium" :class="orderItem.payment_status === 'paid'
+                                            ? 'bg-green-600 text-white'
+                                            : orderItem.payment_status === 'failed'
+                                                ? 'bg-red-600 text-white'
+                                                : 'bg-yellow-600 text-white'
+                                        ">
+                                        {{ orderItem.payment_status }}
                                     </span>
                                 </td>
+
+                                <!-- Products -->
                                 <td class="px-4 py-3 space-y-1">
                                     <div v-for="item in orderItem.items" :key="item.id">
-                                        <router-link :to="{ name: 'Detail', params: { id: item.id } }"
+                                        <router-link :to="{ name: 'Detail', params: { id: item.product.id } }"
                                             class="text-cyan-400 hover:underline">
-                                            {{ item.product.name }} — ${{ item.price }} × {{ item.quantity }}
+                                            {{ item.product.name }} — ${{ item.price }} ×
+                                            {{ item.quantity }}
                                         </router-link>
                                     </div>
                                 </td>
@@ -89,15 +109,15 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import api from '@/plugins/axios';
-import { onMounted, ref } from 'vue';
+import api from "@/plugins/axios";
+import Swal from "sweetalert2";
+import { onMounted, ref } from "vue";
 
 export default {
     setup() {
@@ -107,10 +127,10 @@ export default {
 
         const getOrders = async () => {
             try {
-                const res = await api.get('/api/orders', {
+                const res = await api.get("/api/orders", {
                     headers: {
-                        Authorization: `Bearer ${token}`
-                    }
+                        Authorization: `Bearer ${token}`,
+                    },
                 });
 
                 if (res.data && res.data.data) {
@@ -125,7 +145,48 @@ export default {
             getOrders();
         });
 
-        return { orders };
-    }
-}
+        const updateStatus = async (order) => {
+            const confirm = await Swal.fire({
+                title: "Are you sure?",
+                text: `Change status to ${order.status}?`,
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#06b6d4",
+                cancelButtonColor: "#6b7280",
+                confirmButtonText: "Yes, update it"
+            });
+
+            if (!confirm.isConfirmed) return;
+
+            try {
+                await api.patch(
+                    `/api/orders/${order.id}/status`,
+                    { status: order.status },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                );
+
+                Swal.fire({
+                    icon: "success",
+                    title: "Updated!",
+                    text: "Order status updated successfully.",
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+
+            } catch (err) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Update Failed",
+                    text: err.response?.data?.message || "Server error!",
+                });
+            }
+        };
+
+        return { orders, updateStatus };
+    },
+};
 </script>

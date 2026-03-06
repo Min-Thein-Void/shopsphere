@@ -12,7 +12,7 @@
 
         <!-- Sidebar -->
         <aside
-            class="fixed top-0 mt-18 z-40 left-0 h-screen w-64 bg-neutral-900 text-cyan-500 shadow-lg flex flex-col justify-between transition-transform duration-300"
+            class="fixed top-0 mt-17 z-40 left-0 h-screen w-64 bg-neutral-900/60 backdrop-blur-3xl text-cyan-500 shadow-lg flex flex-col justify-between transition-transform duration-300"
             :class="{ '-translate-x-full': !isOpen, 'translate-x-0': isOpen }">
             <!-- Menu Items -->
             <nav class="flex-1 px-4 py-6 space-y-2 text-sm font-medium">

@@ -28,7 +28,8 @@ export const useProductStore = defineStore("product", {
         this.cartProducts.push({
           id: product.id,
           name: product.name,
-          price: Number(product.price),
+          price: Number(product.final_price ?? product.price),
+          original_price: Number(product.price),
           image: product.image,
           qty,
         });
