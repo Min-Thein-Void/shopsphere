@@ -2,14 +2,14 @@
   <div
     class="relative w-full max-w-sm bg-transparent rounded-2xl border-t-2 border-gray-600/50 ml-8 sm:ml-0 shadow-lg shadow-gray-600 hover:shadow-gray-500 transition p-6 h-125 flex flex-col">
     <!-- Discount Ribbon -->
-   
-      <div v-if="product.discount_label" class="absolute left-0 -top-0.5 h-16 w-16">
-        <div
-          class="absolute transform bg-fuchsia-950 text-center text-white font-semibold py-1 -right-6.5 top-0 w-22.5 rounded-tl-2xl rounded-br-2xl">
-          {{ product.discount_label }}
-        </div>
+
+    <div v-if="product.discount_label" class="absolute left-0 -top-0.5 h-16 w-16">
+      <div
+        class="absolute transform bg-fuchsia-950 text-center text-white font-semibold py-1 -right-6.5 top-0 w-22.5 rounded-tl-2xl rounded-br-2xl">
+        {{ product.discount_label }}
       </div>
-   
+    </div>
+
 
 
     <!-- Product Image -->
@@ -153,7 +153,7 @@ export default {
     let { avgRatings, fetchAvgRatings } = useAvgRatings();
 
     onMounted(() => {
-      fetchAvgRatings(props.product.id);
+      fetchAvgRatings(props.product.id, true);
     });
 
     watch(

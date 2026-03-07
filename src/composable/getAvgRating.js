@@ -5,10 +5,14 @@ import { ref } from "vue";
 export const useAvgRatings = () => {
   const avgRatings = ref(null);
   const loading = ref(false);
+  const ratingCache = ref({});
 
-  const fetchAvgRatings = async (productId) => {
+  const fetchAvgRatings = async (productId, refresh = false) => {
     if (!productId) return;
-
+    if (refresh && ratingCache.value[productId] !== undefined) {
+      avgRatings.value = ratingCache.value[productId];
+      return;
+    }
     loading.value = true;
     try {
       const token = localStorage.getItem("auth_token");
@@ -18,11 +22,9 @@ export const useAvgRatings = () => {
         headers,
       });
 
-      if (res.status === 200 && res.data?.average !== undefined) {
-        avgRatings.value = res.data.average;
-      } else {
-        avgRatings.value = null;
-      }
+      const average = res.data?.average ?? null;
+      avgRatings.value = average;
+      ratingCache.value[productId] = average;
     } catch (error) {
       if (error.message === "Network Error") {
         console.warn(

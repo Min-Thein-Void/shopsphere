@@ -35,9 +35,9 @@
         <!-- Rating Stars -->
         <div class="flex items-center mt-1">
             <!-- If avgRatings exists -->
-            <template v-if="randomProduct.avgRatings">
+            <template v-if="randomProduct.ratings_avg_rating">
                 <svg v-for="n in 5" :key="n" class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20" :class="n <= randomProduct.avgRatings ? 'text-amber-400' : 'text-gray-500'
+                    viewBox="0 0 20 20" :class="n <= randomProduct.ratings_avg_rating ? 'text-amber-400' : 'text-gray-500'
                         ">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 
         3.967a1 1 0 00.95.69h4.178c.969 0 
@@ -48,7 +48,7 @@
         1 0 00-.364-1.118L2.05 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 
         1 0 00.95-.69l1.286-3.967z" />
                 </svg>
-                <span class="ml-2 text-xs text-gray-400">({{ randomProduct.avgRatings }}.0)</span>
+                <span class="ml-2 text-xs text-gray-400">({{ randomProduct.ratings_avg_rating }}.0)</span>
             </template>
 
             <!-- If avgRatings does not exist -->

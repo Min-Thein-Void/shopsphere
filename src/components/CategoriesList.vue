@@ -70,7 +70,6 @@ export default {
 
     return {
       categories,
-      loading: storeLoading,
       currentPage,
       lastPage,
       prevPage,
@@ -78,6 +77,7 @@ export default {
       activeCategory,
       selectCategory,
       clearCategory,
+      loading
     };
   },
 };

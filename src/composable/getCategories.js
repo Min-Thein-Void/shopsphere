@@ -1,15 +1,21 @@
 import api from "@/plugins/axios";
 import { ref, onMounted } from "vue";
 
-export default function useCategories() {
-  const categories = ref([]);
-  const loading = ref(true);
-  let lastPage = ref(1);
-  let currentPage = ref(1);
+const categories = ref([]);
+const loading = ref(false);
+const lastPage = ref(1);
+const currentPage = ref(1);
 
+export default function useCategories() {
   const getCategories = async (page = 1) => {
+    // prevent refetch same page
+    if (page === currentPage.value && categories.value.length) return;
+
+    loading.value = true;
+
     try {
       const res = await api.get(`/api/categories?page=${page}`);
+
       if (res?.status === 200) {
         categories.value = res.data.data;
         currentPage.value = res.data.current_page;
@@ -32,7 +38,11 @@ export default function useCategories() {
     }
   };
 
-  onMounted(getCategories);
+  onMounted(() => {
+    if (!categories.value.length) {
+      getCategories();
+    }
+  });
 
   return {
     categories,
@@ -41,6 +51,6 @@ export default function useCategories() {
     nextPage,
     prevPage,
     currentPage,
-    lastPage
+    lastPage,
   };
 }
