@@ -30,14 +30,24 @@
             class="flex items-center gap-1 px-2 py-1 rounded-md relative transition-all duration-300 hover:text-shadow-xl hover:text-shadow-modern"
             :class="{ 'text-shadow-xl text-shadow-modern': $route.name === 'CheckOut' }">
             <!-- Shopping Cart Icon (solid style) -->
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 6h13L17 13M7 13H5.4" />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"
+              class="w-5 h-5 text-cyan-400 group-hover:text-white">
+              <path
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.35 2.7a1 1 0 00.9 1.3h12.45M7 13h10m-6 8a1 1 0 100-2 1 1 0 000 2zm6 0a1 1 0 100-2 1 1 0 000 2z" />
             </svg>
             Cart
-            <span
-              class="absolute -top-2 -right-3 bg-neutral-600 text-cyan-400 text-xs font-semibold rounded-full px-2 py-0.5">
-              {{ count }}
+            <span class="relative flex size-5">
+              <!-- Ping animation circle -->
+              <span class="absolute inset-0 rounded-full bg-sky-400 opacity-75"
+                :class="count !== 0 ? 'animate-ping' : ''">
+              </span>
+
+              <!-- Main circle -->
+              <span class="relative flex items-center justify-center size-5 rounded-full bg-sky-400">
+                <span class="font-semibold text-[13px] text-white">
+                  {{ count }}
+                </span>
+              </span>
             </span>
           </RouterLink>
         </li>
