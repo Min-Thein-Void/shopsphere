@@ -45,13 +45,11 @@ export default {
         const { products } = getProducts();
         const { submitDiscount, discountType, discountValue } = useDiscount();
 
-        const handleSubmit = async () => {        //res.data.product
-            await submitDiscount(props.productId, (updatedProduct) => {
-                // update only the changed product in the cache
-                products.value = products.value.map(p =>
-                    p.id === updatedProduct.id ? updatedProduct : p
-                );
-            });
+        const handleSubmit = async () => {
+            const updatedDiscountProduct = await submitDiscount(props.productId);
+            products.value = products.value.map(p =>
+                p.id === updatedDiscountProduct.id ? updatedDiscountProduct : p
+            );
         };
 
         return { discountValue, discountType, handleSubmit };

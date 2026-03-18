@@ -6,7 +6,7 @@ export function useDiscount() {
   let discountType = ref("");
   let discountValue = ref(0);
 
-  const submitDiscount = async (id,emitUpdated) => {
+  const submitDiscount = async (id) => {
     const confirmResult = await Swal.fire({
       title: "Are you sure?",
       text: "Do you want to update the discount for this product?",
@@ -58,7 +58,7 @@ export function useDiscount() {
           background: "#1a1a1a",
           color: "#22d3ee",
         });
-        if (emitUpdated) emitUpdated(res.data.product);
+        return res.data.product;
       }
     } catch (error) {
       Swal.fire({
