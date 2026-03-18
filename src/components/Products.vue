@@ -11,7 +11,7 @@
 
         <!-- Skeleton Card -->
         <div v-for="n in 6" :key="n"
-          class="w-full max-w-sm bg-transparent rounded-2xl border-t-2 border-gray-600/50 ml-0 shadow-lg shadow-gray-600 p-6 h-[420px] flex flex-col animate-pulse">
+          class="w-full max-w-sm bg-transparent rounded-2xl border-t-2 border-gray-600/50 ml-0 shadow-lg shadow-gray-600 p-6 h-105 flex flex-col animate-pulse">
 
           <!-- Image Placeholder -->
           <div class="w-full h-52 bg-gray-700 rounded-lg mb-5"></div>
@@ -42,21 +42,24 @@
 </template>
 
 
-<script>
-import { ref, onMounted, computed } from "vue";
+<script lang="ts">
+import { ref, onMounted, computed, Ref } from "vue";
 import Product from "./Product.vue";
 import SearchInput from "./SearchInput.vue";
 import CategoriesList from "./CategoriesList.vue";
-import { getProducts } from "@/composable/getProducts";
+// Product as ProductType De lo yay tar ka Product Interface ko hlan u htar tar 
+import { getProducts , Product as ProductType } from "@/composable/getProducts";
 import { useSearchStore } from "@/stores/useSearchStore";
 import { useSearchCategoryStore } from "@/stores/searchCategoryStore";
 
 export default {
   components: { Product, SearchInput, CategoriesList },
   setup() {
-    const loading = ref(true);
+    const loading:Ref<boolean> = ref(true);
+    //composable
     const { products, fetchProducts } = getProducts();
 
+    //pinia store
     const searchStore = useSearchStore();
     const searchCategoryStore = useSearchCategoryStore();
 
@@ -67,11 +70,11 @@ export default {
     });
 
     // Compute displayed products based on search and category
-    const displayedProducts = computed(() => {
+    const displayedProducts = computed<ProductType[]>(() => {
       if (searchStore.searchResults.length)
-        return searchStore.searchResults;
+        return searchStore.searchResults as ProductType[];
       if (searchCategoryStore.searchCategoryResult.length)
-        return searchCategoryStore.searchCategoryResult;
+        return searchCategoryStore.searchCategoryResult as ProductType[];
       return products.value;
     });
 

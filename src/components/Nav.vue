@@ -24,6 +24,21 @@
           </RouterLink>
         </li>
 
+        <li>
+          <RouterLink :to="{ name: 'Wishlist' }"
+            class="flex items-center gap-1 px-2 py-1 rounded-md transition-all duration-300 hover:text-shadow-xl hover:text-shadow-modern"
+            :class="{ 'text-shadow-xl text-shadow-modern': $route.name === 'Wishlist' }">
+            <!-- Wishlist Icon (heart style) -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
+            </svg>
+
+            Wishlist
+          </RouterLink>
+        </li>
+
+
         <!-- Cart -->
         <li>
           <RouterLink :to="{ name: 'CheckOut' }"

@@ -3,14 +3,20 @@ import debounce from "lodash.debounce";
 import { defineStore } from "pinia";
 import Swal from "sweetalert2";
 
+interface SearchState {
+  searchTerm: string;
+  searchResults: any[];
+  loading: boolean;
+}
+
 export const useSearchStore = defineStore("search", {
-  state: () => ({
+  state: (): SearchState => ({
     searchTerm: "",
     searchResults: [],
     loading: false,
   }),
   actions: {
-    searchProducts: debounce(async function () {
+    searchProducts: debounce(async function (this: SearchState) {
       this.loading = true;
       try {
         const term = this.searchTerm?.trim();
@@ -44,6 +50,6 @@ export const useSearchStore = defineStore("search", {
       } finally {
         this.loading = false;
       }
-    }, 500),
+    }, 500) as unknown as () => Promise<void>,
   },
 });

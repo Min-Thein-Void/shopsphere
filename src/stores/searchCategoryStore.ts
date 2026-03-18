@@ -2,15 +2,21 @@ import api from "@/plugins/axios";
 import { defineStore } from "pinia";
 import Swal from "sweetalert2";
 
+interface SearchByCategoryState{
+  searchCategoryResult:any[],
+  loading:boolean,
+  selectedCategory:string|null
+}
+
 export const useSearchCategoryStore = defineStore("categorySearch", {
-  state: () => ({
+  state: ():SearchByCategoryState => ({
     searchCategoryResult: [],
     loading: false,
-    selectedCategory: null, // now stores category name
+    selectedCategory: null,
   }),
 
   actions: {
-    async searchByProductCategory(categoryName) {
+    async searchByProductCategory(categoryName:string):Promise<void> {
       if (!categoryName || typeof categoryName !== "string") return;
 
       const term = categoryName.trim();
@@ -36,7 +42,7 @@ export const useSearchCategoryStore = defineStore("categorySearch", {
             color: "#e5e7eb",
           });
         }
-      } catch (err) {
+      } catch (err:unknown) {
         console.error("CategorySearch failed:", err);
         Swal.fire({
           icon: "error",
@@ -49,7 +55,7 @@ export const useSearchCategoryStore = defineStore("categorySearch", {
       }
     },
 
-    async fetchAllProducts() {
+    async fetchAllProducts(this:SearchByCategoryState):Promise<void> {
       this.loading = true;
       try {
         const res = await api.get("/api/products");
@@ -62,7 +68,7 @@ export const useSearchCategoryStore = defineStore("categorySearch", {
       }
     },
 
-    async clearCategory() {
+    async clearCategory():Promise<void> {
       if (!this.selectedCategory) return;
 
       this.selectedCategory = null;

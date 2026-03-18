@@ -11,6 +11,7 @@ import OrderLists from "@/components/admin/OrderLists.vue";
 import Profile from "@/components/Profile.vue";
 import OrderHistory from "@/components/OrderHistory.vue";
 import ChangePasswordForm from "@/components/ChangePasswordForm.vue";
+import Wishlist from "@/components/Wishlist.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,6 +25,11 @@ const router = createRouter({
       path: "/shop",
       name: "Shop",
       component: Products,
+    },
+    {
+      path: "/wishlist",
+      name: "Wishlist",
+      component: Wishlist,
     },
     {
       path: "/create",
