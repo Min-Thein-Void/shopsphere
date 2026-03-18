@@ -8,6 +8,10 @@ export interface Product {
   description?: string | null;
   price: number;
   stock: number;
+  discount_type?: string | null;
+  discount_value?: number | null;
+  final_price?: number;
+  discount_label?: string;
   category_id?: number | null;
   created_at: string;
   updated_at: string;
@@ -20,14 +24,12 @@ const fetchProducts = async (): Promise<void> => {
   if (loaded.value) {
     return;
   }
+
   try {
-    if (products.value.length) {
-      return;
-    }
     const res = await api.get<Product[]>("/api/products");
 
     if (res.status === 200) {
-      products.value = res.data;
+      products.value = [...res.data];
       loaded.value = true;
     }
   } catch (error: unknown) {

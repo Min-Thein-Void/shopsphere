@@ -48,14 +48,14 @@ import Product from "./Product.vue";
 import SearchInput from "./SearchInput.vue";
 import CategoriesList from "./CategoriesList.vue";
 // Product as ProductType De lo yay tar ka Product Interface ko hlan u htar tar 
-import { getProducts , Product as ProductType } from "@/composable/getProducts";
+import { getProducts, Product as ProductType } from "@/composable/getProducts";
 import { useSearchStore } from "@/stores/useSearchStore";
 import { useSearchCategoryStore } from "@/stores/searchCategoryStore";
 
 export default {
   components: { Product, SearchInput, CategoriesList },
   setup() {
-    const loading:Ref<boolean> = ref(true);
+    const loading: Ref<boolean> = ref(true);
     //composable
     const { products, fetchProducts } = getProducts();
 
@@ -65,10 +65,9 @@ export default {
 
     // Fetch products on mount
     onMounted(async () => {
-      await fetchProducts();
+      if (!products.value.length) await fetchProducts();
       loading.value = false;
     });
-
     // Compute displayed products based on search and category
     const displayedProducts = computed<ProductType[]>(() => {
       if (searchStore.searchResults.length)

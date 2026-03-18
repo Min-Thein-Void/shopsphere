@@ -49,14 +49,14 @@
                         </button>
                     </div>
                     <div class="flex items-center gap-3">
-                        <span class="text-2xl font-semibold text-cyan-800"
-                            :class="item?.price? 'line-through' : ''">
+                        <span v-if="item?.discount_type" class="text-2xl font-semibold text-cyan-800 line-through">
                             ${{ item?.original_price }}
                         </span>
                         <span class="text-3xl font-bold text-cyan-400">
                             ${{ item?.price }}
                         </span>
                     </div>
+
                 </li>
             </ul>
 

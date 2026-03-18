@@ -1,33 +1,32 @@
-import { ref } from "vue";
-import Swal from "sweetalert2";
 import api from "@/plugins/axios";
+import Swal from "sweetalert2";
+import { ref } from "vue";
 
-export const postRatings = () => {
-  const userRating = ref(0);
+export function useDiscount() {
+  let discountType = ref("");
+  let discountValue = ref(0);
 
-  function setRating(n) {
-    userRating.value = n;
-  }
-
-  async function submitRating(singleProductId) {
+  const submitDiscount = async (id,emitUpdated) => {
     const confirmResult = await Swal.fire({
       title: "Are you sure?",
-      text: "Do you want to rate this product?",
+      text: "Do you want to update the discount for this product?",
       icon: "question",
       showCancelButton: true,
       confirmButtonColor: "#22d3ee",
       cancelButtonColor: "#ef4444",
-      confirmButtonText: "Yes",
+      confirmButtonText: "Yes, update it!",
       cancelButtonText: "Cancel",
       background: "#1a1a1a",
       color: "#22d3ee",
     });
+
     if (!confirmResult.isConfirmed) {
       return;
     }
+
     Swal.fire({
-      title: "Loading...",
-      text: "Please wait while we saving rates for this product.",
+      title: "Updating Discount...",
+      text: "Please wait while we apply the changes.",
       allowOutsideClick: false,
       didOpen: () => {
         Swal.showLoading();
@@ -35,10 +34,14 @@ export const postRatings = () => {
       background: "#1a1a1a",
       color: "#22d3ee",
     });
+
     try {
-      const res = await api.post(
-        "/api/auth/rate",
-        { product_id: singleProductId, rating: userRating.value },
+      const res = await api.patch(
+        `/api/products/${id}/discount`,
+        {
+          discount_type: discountType.value,
+          discount_value: discountValue.value,
+        },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
@@ -49,23 +52,29 @@ export const postRatings = () => {
       if (res.status === 200) {
         Swal.fire({
           icon: "success",
-          title: "Thanks!",
-          text: `You rated ${userRating.value} stars to our product`,
+          title: "Discount Updated",
+          text: res.data.message,
           confirmButtonColor: "#22d3ee",
+          background: "#1a1a1a",
+          color: "#22d3ee",
         });
+        if (emitUpdated) emitUpdated(res.data.product);
       }
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Error",
         text: error.response?.data?.message || "Something went wrong",
+        confirmButtonColor: "#ef4444",
+        background: "#1a1a1a",
+        color: "#22d3ee",
       });
     }
-  }
+  };
 
   return {
-    setRating,
-    submitRating,
-    userRating,
+    submitDiscount,
+    discountType,
+    discountValue,
   };
-};
+}

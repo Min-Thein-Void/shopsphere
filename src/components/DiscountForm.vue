@@ -2,7 +2,7 @@
     <div class="mt-10 p-6 bg-neutral-900 border border-neutral-800 rounded-2xl shadow-lg">
         <h3 class="text-xl font-bold text-cyan-300 mb-4">Set Discount</h3>
 
-        <form @submit.prevent="submitDiscount" class="space-y-4">
+        <form @submit.prevent="handleSubmit" class="space-y-4">
             <!-- Discount Type -->
             <div>
                 <label class="block text-sm text-neutral-400 mb-2">Discount Type</label>
@@ -32,10 +32,8 @@
 </template>
 
 <script>
-import api from "@/plugins/axios";
-import Swal from "sweetalert2";
-import { ref } from "vue";
-
+import { useDiscount } from "@/composable/useDiscount";
+import { getProducts } from "@/composable/getProducts";
 export default {
     props: {
         productId: {
@@ -44,41 +42,19 @@ export default {
         },
     },
     setup(props) {
-        let discountType = ref("");
-        let discountValue = ref(0);
+        const { products } = getProducts();
+        const { submitDiscount, discountType, discountValue } = useDiscount();
 
-        const submitDiscount = async () => {
-            try {
-                const res = await api.patch(
-                    `/api/products/${props.productId}/discount`,
-                    {
-                        discount_type: discountType.value,
-                        discount_value: discountValue.value,
-                    },
-                    {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
-                        },
-                    },
+        const handleSubmit = async () => {        //res.data.product
+            await submitDiscount(props.productId, (updatedProduct) => {
+                // update only the changed product in the cache
+                products.value = products.value.map(p =>
+                    p.id === updatedProduct.id ? updatedProduct : p
                 );
-                if (res.status === 200) {
-                    Swal.fire({
-                        icon: "success",
-                        title: "Discount Updated",
-                        text: res.data.message,
-                        confirmButtonColor: "#22d3ee",
-                    });
-                }
-            } catch (error) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Error",
-                    text: error.response?.data?.message || "Something went wrong",
-                });
-            }
+            });
         };
 
-        return { discountValue, discountType, submitDiscount };
+        return { discountValue, discountType, handleSubmit };
     },
 };
 </script>

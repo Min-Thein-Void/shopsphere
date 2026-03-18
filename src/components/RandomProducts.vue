@@ -48,7 +48,10 @@
         1 0 00-.364-1.118L2.05 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 
         1 0 00.95-.69l1.286-3.967z" />
                 </svg>
-                <span class="ml-2 text-xs text-gray-400">({{ randomProduct.ratings_avg_rating }}.0)</span>
+                <span class="ml-2 text-xs text-gray-400">
+                    ({{ Number(randomProduct.ratings_avg_rating).toFixed(1) }})
+                </span>
+
             </template>
 
             <!-- If avgRatings does not exist -->
@@ -80,15 +83,19 @@
                 </span>
             </div>
 
-            <button @click="addToCart(randomProduct)" type="button"
-                class="inline-flex items-center gap-1.5 hover:bg-neutral-800 rounded-2xl text-cyan-300 text-sm font-medium px-4 py-2 border-gray-600 shadow-sm shadow-gray-300/50 transition duration-200 focus:outline-none">
-                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4
-            2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4
-            2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
-                </svg>
-                Add to Cart
-            </button>
+            <div class="flex gap-2">
+                <!-- Add to Cart -->
+                <button @click="addToCart(randomProduct)" type="button"
+                    class="inline-flex items-center gap-1 hover:bg-neutral-800 rounded-lg text-cyan-300 text-xs font-medium px-2.5 py-1.5 shadow-sm transition duration-200 focus:outline-none">
+                    🛒 Cart
+                </button>
+
+                <!-- Add to Wishlist -->
+                <button @click="addToWishlist(product.id)" type="button"
+                    class="inline-flex items-center gap-1 hover:bg-neutral-800 rounded-lg text-pink-400 text-xs font-medium px-2.5 py-1.5 shadow-sm transition duration-200 focus:outline-none">
+                    ❤️ Wishlist
+                </button>
+            </div>
         </div>
     </div>
 </template>
