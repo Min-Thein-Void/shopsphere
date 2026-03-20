@@ -138,7 +138,7 @@
 </template>
 
 <script>
-import { useProductStore } from "@/stores/useProductStore";
+import { useCartProductStore } from "@/stores/useCartProductStore";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import { onMounted, watch } from "vue";
@@ -165,7 +165,7 @@ export default {
   setup(props) {
     let router = useRouter();
     //addToCart
-    let cart = useProductStore();
+    let cart = useCartProductStore();
     const addToCart = async () => {
       const result = await Swal.fire({
         title: "Add to Cart?",

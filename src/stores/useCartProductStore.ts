@@ -21,7 +21,7 @@ type Product = Partial<CartProduct> & {
   image?: string;
 };
 
-export const useProductStore = defineStore("product", {
+export const useCartProductStore = defineStore("cartProduct", {
   state: (): ProductInterface => ({
     cartProducts: JSON.parse(
       localStorage.getItem("cart") || "[]",

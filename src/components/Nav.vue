@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { useProductStore } from "@/stores/useProductStore";
+import { useCartProductStore } from "@/stores/useCartProductStore";
 import { useUserStore } from "@/stores/useUserStore";
 import { computed } from "vue";
 
@@ -83,7 +83,7 @@ export default {
   name: "NavBar",
   setup() {
     let store = useUserStore();
-    let cartStore = useProductStore();
+    let cartStore = useCartProductStore();
     let count = computed(() => {
       return cartStore.count
     })

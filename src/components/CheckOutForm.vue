@@ -42,7 +42,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import api from "@/plugins/axios";
-import { useProductStore } from "@/stores/useProductStore";
+import { useCartProductStore } from "@/stores/useCartProductStore";
 import { useUserStore } from "@/stores/useUserStore";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
@@ -64,7 +64,7 @@ onMounted(() => {
 });
 
 const orderNow = async () => {
-    const store = useProductStore();
+    const store = useCartProductStore();
     const items = store.cartProducts.map(p => ({
         product_id: p.id,
         quantity: p.qty,

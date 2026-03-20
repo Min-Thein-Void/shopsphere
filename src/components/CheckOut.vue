@@ -104,13 +104,13 @@
 
 <script>
 import CheckOutForm from './CheckOutForm.vue'
-import { useProductStore } from '@/stores/useProductStore';
+import { useCartProductStore } from '@/stores/useCartProductStore';
 import { computed } from 'vue';
 
 export default {
     components: { CheckOutForm },
     setup() {
-        const cart = useProductStore();
+        const cart = useCartProductStore();
         const remove = (id) => cart.removeItem(id)
         const removes = () => cart.clear()
         const cartItemsInCheckOut = computed(() => cart.cartProducts)

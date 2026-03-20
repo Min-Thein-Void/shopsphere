@@ -101,10 +101,10 @@
 </template>
 
 <script>
-import { getSingleProduct } from "@/composable/getSingleProduct";
-import { useProductStore } from "@/stores/useProductStore";
-import { onMounted, ref, watch } from "vue";
+import { useCartProductStore } from "@/stores/useCartProductStore";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import { useProductStore } from "@/stores/useProductStore"
 
 export default {
     props: {
@@ -117,11 +117,12 @@ export default {
     setup() {
         const route = useRoute();
         const loading = ref(true);
-        const { singleproduct, fetchSingleProduct } = getSingleProduct();
+        const productStore = useProductStore();
+        const singleproduct = computed(() => productStore.singleProduct);
 
         const loadProduct = async (id) => {
             loading.value = true;
-            await fetchSingleProduct(id);
+            await productStore.fetchSingleProduct(id);
             loading.value = false;
         };
 
@@ -151,7 +152,7 @@ export default {
             }
         );
 
-        const cart = useProductStore();
+        const cart = useCartProductStore();
         const addToCart = (product) => {
             cart.addItem(product, 1);
         };

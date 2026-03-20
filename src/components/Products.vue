@@ -42,47 +42,42 @@
 </template>
 
 
-<script lang="ts">
-import { ref, onMounted, computed, Ref } from "vue";
+<script setup>
+import { ref, onMounted, computed } from "vue";
+
 import Product from "./Product.vue";
 import SearchInput from "./SearchInput.vue";
 import CategoriesList from "./CategoriesList.vue";
-// Product as ProductType De lo yay tar ka Product Interface ko hlan u htar tar 
-import { getProducts, Product as ProductType } from "@/composable/getProducts";
+import { useProductStore } from "@/stores/useProductStore";
 import { useSearchStore } from "@/stores/useSearchStore";
 import { useSearchCategoryStore } from "@/stores/searchCategoryStore";
 
-export default {
-  components: { Product, SearchInput, CategoriesList },
-  setup() {
-    const loading: Ref<boolean> = ref(true);
-    //composable
-    const { products, fetchProducts } = getProducts();
+// stores
+const productStore = useProductStore();
+const searchStore = useSearchStore();
+const searchCategoryStore = useSearchCategoryStore();
 
-    //pinia store
-    const searchStore = useSearchStore();
-    const searchCategoryStore = useSearchCategoryStore();
+// state
+const loading = ref(true);
 
-    // Fetch products on mount
-    onMounted(async () => {
-      if (!products.value.length) await fetchProducts();
-      loading.value = false;
-    });
-    // Compute displayed products based on search and category
-    const displayedProducts = computed<ProductType[]>(() => {
-      if (searchStore.searchResults.length)
-        return searchStore.searchResults as ProductType[];
-      if (searchCategoryStore.searchCategoryResult.length)
-        return searchCategoryStore.searchCategoryResult as ProductType[];
-      return products.value;
-    });
+// fetch products
+onMounted(async () => {
+  if (!productStore.products.length) {
+    await productStore.fetchProducts();
+  }
+  loading.value = false;
+});
 
-    return {
-      loading,
-      searchStore,
-      searchCategoryStore,
-      displayedProducts,
-    };
-  },
-};
+// computed products
+const displayedProducts = computed(() => {
+  if (searchStore.searchResults.length) {
+    return searchStore.searchResults;
+  }
+
+  if (searchCategoryStore.searchCategoryResult.length) {
+    return searchCategoryStore.searchCategoryResult;
+  }
+
+  return productStore.products;
+});
 </script>
